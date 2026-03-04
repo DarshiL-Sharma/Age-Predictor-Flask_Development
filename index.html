@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Result</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<style>
+
+/* entrance animation */
+
+.result-card{
+opacity:0;
+transform:translateY(40px);
+animation:fadeUp 1s ease forwards;
+animation-delay:.2s;
+}
+
+@keyframes fadeUp{
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* big age number */
+
+.age-number{
+font-size:64px;
+font-weight:700;
+margin:10px 0;
+letter-spacing:-1px;
+}
+
+/* subtle glow pulse */
+
+.result-card{
+box-shadow:
+0 0 80px rgba(120,140,255,.35),
+0 0 160px rgba(255,120,200,.2);
+
+animation:
+fadeUp 1s ease forwards,
+pulseGlow 4s ease-in-out infinite;
+}
+
+@keyframes pulseGlow{
+
+0%{
+box-shadow:
+0 0 80px rgba(120,140,255,.35),
+0 0 160px rgba(255,120,200,.2);
+}
+
+50%{
+box-shadow:
+0 0 120px rgba(120,140,255,.55),
+0 0 220px rgba(255,120,200,.35);
+}
+
+100%{
+box-shadow:
+0 0 80px rgba(120,140,255,.35),
+0 0 160px rgba(255,120,200,.2);
+}
+
+}
+
+.back-btn{
+margin-top:15px;
+display:inline-block;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- same animated background -->
+
+<div class="lights"></div>
+<div class="glass"></div>
+<div class="particles" id="particles"></div>
+
+<div class="container result-card">
+
+<h1>Hello {{name}}</h1>
+
+<p>Estimated age</p>
+
+<div class="age-number" id="age">{{age}}</div>
+
+<a href="/" class="back-btn">
+<button>Try Another Name</button>
+</a>
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+<script>
+
+/* animated number counter */
+
+const ageElement = document.getElementById("age")
+const finalAge = parseInt(ageElement.innerText)
+
+let current = 0
+
+function animateAge(){
+
+current += Math.ceil(finalAge / 30)
+
+if(current >= finalAge){
+current = finalAge
+}
+
+ageElement.innerText = current
+
+if(current < finalAge){
+requestAnimationFrame(animateAge)
+}
+
+}
+
+ageElement.innerText = 0
+animateAge()
+
+</script>
+
+</body>
+</html>
